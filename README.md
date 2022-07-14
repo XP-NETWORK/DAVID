@@ -11,11 +11,13 @@ contract on Ropsten: https://bit.ly/3n2JOPs
 
 The contract needs to have:
 Royalty payments
-Pre reveal NFT URI capabilities ff
+Pre reveal NFT URI capabilities 
 One Base URI For all tokens
 IPFS
 
-Only Owner Function:
+Only Owner Functions:
+
+
 Name: setReveal , 
 Description: function returns a boolean that will decide if the baseUrl is visible to the public.
 
