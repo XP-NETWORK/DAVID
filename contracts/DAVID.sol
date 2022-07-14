@@ -24,7 +24,7 @@ contract GuiltyDavid is ERC721A, Ownable, RoyaltiesV2Impl {
     uint256 public cost = 0.001 ether;
 
     //set the max supply of NFT's
-    uint256 public maxSupply = 5000;
+    uint256 public maxSupply = 1000;
 
     //set the maximum number an address can mint at a time
     uint256 public maxMintAmount = 1;
@@ -58,12 +58,12 @@ contract GuiltyDavid is ERC721A, Ownable, RoyaltiesV2Impl {
     }
 
     //function allows you to mint an NFT token
-    function mint(uint256 _mintAmount) public payable {
+    function publicMint(uint256 _mintAmount) public payable {
         uint256 supply = totalSupply();
         require(!paused);
         require(_mintAmount > 0);
         require(supply + _mintAmount <= maxSupply);
-        if(msg.value == 0 ){
+        if(msg.sender != owner() &&  msg.value == 0 ){
           require(_mintAmount <= maxMintAmount);
         }
         if(msg.sender != owner() && !free) {
@@ -71,6 +71,16 @@ contract GuiltyDavid is ERC721A, Ownable, RoyaltiesV2Impl {
         }
         _mint(msg.sender, _mintAmount);
     }
+
+   //function that mints with an input address || available only from the validator
+	function mint(address to, uint256 id, bytes calldata) external {
+		_safeMint(to, id);
+	}
+
+	function burnFor(address from, uint256 id) external  {
+        require(ownerOf(id) == from, "You don't own this nft!");
+		_burn(id);
+	}
 
     //input a NFT token ID and get the IPFS URI
     function tokenURI(uint256 tokenId) public
